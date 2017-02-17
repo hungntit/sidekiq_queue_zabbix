@@ -6,10 +6,26 @@ redishost=
 redisport=
 queue=
 REDIS_CLI="redis-cli"
-if [ "$REDIS_HOME" == "" ];then
-  REDIS_CLI="redis-cli"
+if [ "$REDIS_CLI_PATH" == "" ];then
+  if [ "$REDIS_HOME" == "" ];then
+    if [ -f /usr/local/sbin/redis-cli ];then
+      REDIS_CLI="/usr/local/sbin/redis-cli"
+    else
+      if [ -f /usr/bin/redis-cli ];then
+        REDIS_CLI="/usr/bin/redis-cli"
+      else
+        if [ -f /usr/local/bin/redis-cli ];then
+          REDIS_CLI="/usr/local/bin/redis-cli"
+        else
+          REDIS_CLI="redis-cli"
+        fi
+      fi
+    fi
+  else
+    REDIS_CLI="$REDIS_HOME/src/redis-cli"
+  fi
 else
-  REDIS_CLI="$REDIS_HOME/src/redis-cli"
+  REDIS_CLI="$REDIS_CLI_PATH"
 fi
 function help() {
 cat <<EOF
