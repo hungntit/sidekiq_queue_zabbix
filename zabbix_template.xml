@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>2.0</version>
-    <date>2016-02-17T03:10:23Z</date>
+    <version>3.0</version>
+    <date>2017-02-17T04:34:15Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -99,17 +99,19 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
+                            <application_prototypes/>
                         </item_prototype>
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Sidekiq Queue Monitor:sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT}].avg(2m)}&gt;1000</expression>
+                            <expression>{Template Sidekiq Queue Monitor:sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT}].avg(2m)}&gt;1000</expression>
                             <name>Average size of {#SK_NS}:{#SK_QUEUE} is greater than 1000 in 2 minutes on redis {#REDIS_HOST}:{#REDIS_PORT}</name>
                             <url/>
                             <status>0</status>
                             <priority>4</priority>
                             <description/>
                             <type>0</type>
+                            <dependencies/>
                         </trigger_prototype>
                     </trigger_prototypes>
                     <graph_prototypes>
@@ -139,7 +141,7 @@
                                     <calc_fnc>2</calc_fnc>
                                     <type>0</type>
                                     <item>
-                                        <host>Sidekiq Queue Monitor</host>
+                                        <host>Template Sidekiq Queue Monitor</host>
                                         <key>sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT}]</key>
                                     </item>
                                 </graph_item>
