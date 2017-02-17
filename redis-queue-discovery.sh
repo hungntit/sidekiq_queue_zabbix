@@ -5,7 +5,12 @@ namespace=
 redishost=
 redisport=
 queue=
-
+REDIS_CLI="redis-cli"
+if [ "$REDIS_HOME" == "" ];then
+  REDIS_CLI="redis-cli"
+else
+  REDIS_CLI="$REDIS_HOME/src/redis-cli"
+fi
 function help() {
 cat <<EOF
 @Author: hungnt
@@ -71,7 +76,7 @@ function queuesize() {
 }
 cmd=$1
 shift
-REDIS_CLI_CMD="redis-cli"
+REDIS_CLI_CMD="$REDIS_CLI"
 while [[ $# > 1 ]]
 do
 key="$1"
@@ -116,7 +121,7 @@ esac
 shift # past argument or value
 done
 
-REDIS_CLI_CMD="redis-cli"
+REDIS_CLI_CMD="$REDIS_CLI"
 if [ ! -x ${redishost} ];then
   REDIS_CLI_CMD="${REDIS_CLI_CMD} -h ${redishost}"
 fi

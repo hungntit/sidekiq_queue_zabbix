@@ -6,7 +6,10 @@ This mini project use for sidekiq queue monitoring on zabbix. It supports showin
  - Setup zabbix-agent
 
 ## Import userparams for zabbix-agent
- Copy userparam_sidekiq_queue.conf to your zabbix-agent config dir. Restart you zabbix-agent service
- 
+
+ - Copy userparam_sidekiq_queue.conf to your zabbix-agent config dir.
+ - Copy redis-queue-discovery.sh to external scripts dir ( view userparam_sidekiq_queue.conf to see full path). You can export REDIS_HOME variable if you need specify REDIS PATH. Redis will load on $REDIS_HOME/src/redis-cli. If you don't specify REDIS_HOME variable, the script will call redis-cli 
+ - Restart you zabbix-agent service
+
 #  Import template
 Import zabbix_template.xml and custom discovery keys (change namespace, redis host, redis port) on zabbix ( Zabbix Screen -> Config -> Templates -> Choose imported templates -> Discovery Rules )
