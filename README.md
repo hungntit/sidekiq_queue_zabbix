@@ -22,7 +22,7 @@ This mini project use for sidekiq queue monitoring on zabbix. It supports showin
    - {$SIDEKIQ_DB}: the db number
    - {$SIDEKIQ_REDIS_HOST}: the redis host
    - {$SIDEKIQ_REDIS_PORT}: the redis port
-   - {$SIDEKIQ_NS}: the sidekiq namespace
+   - {$SIDEKIQ_NS}: the sidekiq namespace. The value can be `all` to list all, or `value1 value2` or empty.
 
  ## Add Template Sidekiq Queue Monitor
  On  Zabbix Screen -> Config -> Host. Click redis host which contains sidekiq data.

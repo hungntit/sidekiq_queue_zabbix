@@ -63,7 +63,7 @@
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT},{#REDIS_DB}]</key>
+                            <key>sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{$SIDEKIQ_REDIS_HOST},{$SIDEKIQ_REDIS_PORT},{$SIDEKIQ_DB}]</key>
                             <delay>50</delay>
                             <history>15</history>
                             <trends>30</trends>
@@ -99,24 +99,24 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <application_prototypes/>
+
                         </item_prototype>
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Sidekiq Queue Monitor:sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT},{#REDIS_DB}].avg(2m)}&gt;1000</expression>
-                            <name>Average size of {#SK_NS}:{#SK_QUEUE} is greater than 1000 in 2 minutes on redis {#REDIS_HOST}:{#REDIS_PORT}</name>
+                            <expression>{Template Sidekiq Queue Monitor:sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{$SIDEKIQ_REDIS_HOST},{$SIDEKIQ_REDIS_PORT},{$SIDEKIQ_DB}].avg(2m)}&gt;1000</expression>
+                            <name>Average size of {#SK_NS}:{#SK_QUEUE} is greater than 1000 in 2 minutes on redis {$SIDEKIQ_REDIS_HOST}:{$SIDEKIQ_REDIS_PORT}</name>
                             <url/>
                             <status>0</status>
                             <priority>4</priority>
                             <description/>
                             <type>0</type>
-                            <dependencies/>
+
                         </trigger_prototype>
                     </trigger_prototypes>
                     <graph_prototypes>
                         <graph_prototype>
-                            <name>Size of sidekiq queue {#SK_NS}:{#SK_QUEUE} on redis {#REDIS_HOST}:{#REDIS_PORT}</name>
+                            <name>Size of sidekiq queue {#SK_NS}:{#SK_QUEUE} on redis</name>
                             <width>900</width>
                             <height>200</height>
                             <yaxismin>0.0000</yaxismin>
@@ -142,7 +142,7 @@
                                     <type>0</type>
                                     <item>
                                         <host>Template Sidekiq Queue Monitor</host>
-                                        <key>sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT},{#REDIS_DB}]</key>
+                                        <key>sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{$SIDEKIQ_REDIS_HOST},{$SIDEKIQ_REDIS_PORT},{$SIDEKIQ_DB}]</key>
                                     </item>
                                 </graph_item>
                             </graph_items>
@@ -151,7 +151,24 @@
                     <host_prototypes/>
                 </discovery_rule>
             </discovery_rules>
-            <macros/>
+            <macros>
+                <macro>
+                    <macro>{$SIDEKIQ_DB}</macro>
+                    <value>0</value>
+                </macro>
+                <macro>
+                    <macro>{$SIDEKIQ_NS}</macro>
+                    <value/>
+                </macro>
+                <macro>
+                    <macro>{$SIDEKIQ_REDIS_HOST}</macro>
+                    <value>127.0.0.1</value>
+                </macro>
+                <macro>
+                    <macro>{$SIDEKIQ_REDIS_PORT}</macro>
+                    <value>6379</value>
+                </macro>
+            </macros>
             <templates/>
             <screens/>
         </template>

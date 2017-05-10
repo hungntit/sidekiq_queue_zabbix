@@ -47,7 +47,7 @@ EOF
 }
 
 #list sidekiq namespace
-function list_namespaces() {
+function list_all_namespaces() {
   echo "keys *queues"|${REDIS_CLI_CMD}|awk '{
           if(match($1,":queues")){
              split($1,a,":queues");
@@ -55,30 +55,39 @@ function list_namespaces() {
           }else if($1 == "queues") print "default"
   }'
 }
+function list_namespaces() {
+  if [ "$namespace" == "all" ];then
+    list_all_namespaces
+  else
+    if [ "$namespace" == "" ];then
+      echo "default"
+    else
+      for i in $(echo $namespace | tr " " "\n"); do echo \"$i\"; done
+    fi
+  fi
+
+}
+function printDiscoveryLine() {
+  local ns=$1
+  local seperator=$2
+  local queuesns=$ns:queues
+  if [ "${ns}" == "default" ];then
+    queuesns="queues"
+    ns=""
+  fi
+  printf "$seperator"
+  echo  "SMEMBERS ${queuesns}"|${REDIS_CLI_CMD}|awk -v namespace="${ns}"  '{if($1 != "" ) { printf "%s\t\t{\"{#SK_QUEUE}\":\"%s\", \"{#SK_NS}\":\"%s\"}",seperate,$1,namespace; seperate=",\n"}}'
+}
 #show all queues of sidekiq by namespace
 function discovery() {
-        local seperator=
-	if [ "$namespace" == "all" ];then
+    local seperator=
 		echo -e "{\n\t\"data\":["
     for tmpns in `list_namespaces`;do
       local ns=$tmpns
-			local queuesns=$ns:queues
-      if [ "${ns}" == "default" ];then
-        queuesns="queues"
-        ns=""
-			fi
-			printf "$seperator"
-			echo  "SMEMBERS ${queuesns}"|${REDIS_CLI_CMD}|awk -v namespace="${ns}" -v redishost="$redishost" -v redisport="$redisport" -v redisdb="$redisdb" '{if($1 != "" ) { printf "%s\t\t{\"{#SK_QUEUE}\":\"%s\", \"{#SK_NS}\":\"%s\", \"{#REDIS_HOST}\":\"%s\", \"{#REDIS_PORT}\":\"%s\", \"{#REDIS_DB}\":\"%s\"}",seperate,$1,namespace,redishost,redisport,redisdb; seperate=",\n"}}'
-			seperator=",\n"
+			printDiscoveryLine $ns $seperator
+      seperator=",\n"
 		done
 		echo -e "\n\t]\n}"
-	 else
-		local queuesns=$namespace:queues
-		if [ -x $namespace ];then
-      queuesns="queues"
-    fi
-  	echo  "SMEMBERS ${queuesns}"|${REDIS_CLI_CMD}|awk -v namespace="${namespace}" -v redishost="$redishost" -v redisport="$redisport" -v redisdb="$redisdb" 'BEGIN {print "{\n\t\"data\":["} {if($1 != "" ) { printf "%s\t\t{\"{#SK_QUEUE}\":\"%s\", \"{#SK_NS}\":\"%s\", \"{#REDIS_HOST}\":\"%s\", \"{#REDIS_PORT}\":\"%s\", \"{#REDIS_DB}\":\"%s\"}",seperate,$1,namespace,redishost,redisport,redisdb; seperate=",\n"}} END{print "\n\t]\n}"}'
- 	fi
 }
 #show size of queue in sidekiq
 function queuesize() {
