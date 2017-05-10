@@ -29,7 +29,7 @@
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>sidekiq.queue.discovery[all,127.0.0.1,]</key>
+                    <key>sidekiq.queue.discovery[all,127.0.0.1,6379,0]</key>
                     <delay>60</delay>
                     <status>0</status>
                     <allowed_hosts/>
@@ -63,7 +63,7 @@
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT}]</key>
+                            <key>sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT},{#REDIS_DB}]</key>
                             <delay>50</delay>
                             <history>15</history>
                             <trends>30</trends>
@@ -104,7 +104,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Sidekiq Queue Monitor:sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT}].avg(2m)}&gt;1000</expression>
+                            <expression>{Template Sidekiq Queue Monitor:sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT},{#REDIS_DB}].avg(2m)}&gt;1000</expression>
                             <name>Average size of {#SK_NS}:{#SK_QUEUE} is greater than 1000 in 2 minutes on redis {#REDIS_HOST}:{#REDIS_PORT}</name>
                             <url/>
                             <status>0</status>
@@ -142,7 +142,7 @@
                                     <type>0</type>
                                     <item>
                                         <host>Template Sidekiq Queue Monitor</host>
-                                        <key>sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT}]</key>
+                                        <key>sidekiq.queue.size[{#SK_NS},{#SK_QUEUE},{#REDIS_HOST},{#REDIS_PORT},{#REDIS_DB}]</key>
                                     </item>
                                 </graph_item>
                             </graph_items>

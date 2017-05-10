@@ -8,8 +8,22 @@ This mini project use for sidekiq queue monitoring on zabbix. It supports showin
 ## Import userparams for zabbix-agent
 
  - Copy userparam_sidekiq_queue.conf to your zabbix-agent config dir.
- - Copy redis-queue-discovery.sh to external scripts dir ( view userparam_sidekiq_queue.conf to see full path). You can export REDIS_HOME variable if you need specify REDIS PATH. Redis will load on $REDIS_HOME/src/redis-cli. If you don't specify REDIS_HOME variable, the script will call redis-cli 
+ - Copy redis-queue-discovery.sh to external scripts dir ( view userparam_sidekiq_queue.conf to see full path). You can export REDIS_HOME variable if you need specify REDIS PATH. Redis will load on $REDIS_HOME/src/redis-cli. If you don't specify REDIS_HOME variable, the script will call redis-cli
+ - Add execute permission by `chmod +x redis-queue-discovery.sh`
  - Restart you zabbix-agent service
 
-#  Import template
-Import zabbix_template.xml and custom discovery keys (change namespace, redis host, redis port) on zabbix ( Zabbix Screen -> Config -> Templates -> Choose imported templates -> Discovery Rules )
+ # Import template
+  Import zabbix_template.xml  to zabbix ( Zabbix Screen -> Config -> Templates -> Choose imported templates ).
+
+ # Add Template to host
+
+ ## Setup Macros for host
+   Add below macros on Host Macros:
+   - {$SIDEKIQ_DB}: the db number
+   - {$SIDEKIQ_REDIS_HOST}: the redis host
+   - {$SIDEKIQ_REDIS_PORT}: the redis port
+   - {$SIDEKIQ_NS}: the sidekiq namespace
+
+ ## Add Template Sidekiq Queue Monitor
+ On  Zabbix Screen -> Config -> Host. Click redis host which contains sidekiq data.
+ Click Templates Menu, add `Template Sidekiq Queue Monitor` and `Update`
