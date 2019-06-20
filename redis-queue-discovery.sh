@@ -62,7 +62,7 @@ function list_namespaces() {
     if [ "$namespace" == "" ];then
       echo "default"
     else
-      for i in $(echo $namespace | tr " " "\n"); do echo \"$i\"; done
+      for i in $(echo $namespace | tr " " "\n"); do echo $i; done
     fi
   fi
 
@@ -95,8 +95,8 @@ function queuesize() {
 	echo "queue name is wrong"
 	return;
   fi
-  local queuesns=$ns:queues
-  if [ -x $ns ];then
+  local queuesns=$namespace:queue
+  if [ -x $namespace ];then
        queuesns="queue"
   fi
   echo "llen ${queuesns}:${queue}"|${REDIS_CLI_CMD}|awk '{print $1}'
